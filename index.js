@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  doseSEDFromHourlyUVI,
   percentExposureIfOutsideNow,
   safeStartTimeForRestOfDay,
 } from "./lib.js";
