@@ -9,7 +9,7 @@ import express from "express";
 const app = express();
 const port = 3000;
 
-app.get("/", async (req, res) => {
+app.get("/api", async (req, res) => {
   // Get latitude and longitude from query parameters
   const lat = parseFloat(req.query.lat);
   const lon = parseFloat(req.query.lon);
@@ -36,6 +36,9 @@ app.get("/", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
+// Serve static files from the "public" directory
+app.use(express.static("public"));
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
