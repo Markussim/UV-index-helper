@@ -8,8 +8,6 @@ async function main() {
   console.log(data);
 
   document.getElementById("output").textContent = JSON.stringify(data, null, 2);
-
-  main();
 }
 
 main();

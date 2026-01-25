@@ -18,11 +18,10 @@ function getZoneAndSeries(apiData) {
 }
 
 function restOfDayWindow(zone) {
-  const now = DateTime.now().setZone(zone);
+  const now = DateTime.now().setZone(zone).startOf("minute"); // <- snap
   const end = now.plus({ days: 1 }).startOf("day");
   return { now, end };
 }
-
 function lowerBound(arr, x) {
   // first index i such that arr[i] >= x
   let lo = 0,
@@ -134,7 +133,11 @@ export function safeStartTimeForRestOfDay(
 
   // Check now
   if (doseFrom(nowMs) <= thresholdSED) {
-    return { status: "right_now", safeTimeISO: now.toISO(), zone };
+    return {
+      status: "right_now",
+      safeTimeISO: now.toISO({ suppressMilliseconds: true }),
+      zone,
+    };
   }
 
   // Binary search on time using fast doseFrom()
@@ -148,9 +151,13 @@ export function safeStartTimeForRestOfDay(
     else lo = mid;
   }
 
+  const snappedHi = Math.ceil(hi / epsMs) * epsMs;
+
   return {
     status: "later",
-    safeTimeISO: DateTime.fromMillis(hi, { zone }).toISO(),
+    safeTimeISO: DateTime.fromMillis(snappedHi, { zone }).toISO({
+      suppressMilliseconds: true,
+    }),
     zone,
   };
 }
