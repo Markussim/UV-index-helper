@@ -1,0 +1,277 @@
+/* ----------------------------
+   Modern minimalist UV UI
+   ---------------------------- */
+
+:root {
+  /* Colors (light mode) */
+  --bg: #0b1220;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-2: rgba(255, 255, 255, 0.08);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+  --border: rgba(255, 255, 255, 0.12);
+
+  --accent: #7c5cff;       /* primary */
+  --accent-2: #22c55e;     /* success */
+  --danger: #ef4444;
+
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+  --radius: 18px;
+
+  --gap: 16px;
+  --container: 720px;
+
+  /* Typography */
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f7fb;
+    --panel: rgba(0, 0, 0, 0.04);
+    --panel-2: rgba(0, 0, 0, 0.06);
+    --text: rgba(0, 0, 0, 0.88);
+    --muted: rgba(0, 0, 0, 0.60);
+    --border: rgba(0, 0, 0, 0.10);
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 40%),
+    var(--bg);
+  line-height: 1.35;
+}
+
+/* Layout */
+.page {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  display: grid;
+  gap: 18px;
+}
+
+.header {
+  padding: 8px 4px 4px;
+}
+
+.title {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: clamp(28px, 4.5vw, 44px);
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: clamp(14px, 2vw, 16px);
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(180deg, var(--panel), transparent 200%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(16px, 2.6vw, 22px);
+  backdrop-filter: blur(10px);
+}
+
+.card-result {
+  border-color: rgba(124, 92, 255, 0.28);
+}
+
+/* Actions row */
+.actions {
+  display: grid;
+  gap: 10px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Form */
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 520px) {
+  .form {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+  .form input[type="submit"] {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+.input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 12px 14px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 160ms ease, transform 120ms ease, background 160ms ease;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+@media (prefers-color-scheme: light) {
+  .input::placeholder {
+    color: rgba(0, 0, 0, 0.38);
+  }
+}
+
+.input:focus {
+  border-color: rgba(124, 92, 255, 0.65);
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.18);
+}
+
+/* Buttons */
+.btn {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 120ms ease, background 160ms ease,
+    border-color 160ms ease, box-shadow 160ms ease;
+  user-select: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  color: white;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 1), rgba(99, 102, 241, 1));
+  box-shadow: 0 14px 34px rgba(124, 92, 255, 0.25);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 16px 42px rgba(124, 92, 255, 0.30);
+}
+
+.btn-ghost {
+  color: var(--text);
+  background: transparent;
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  background: var(--panel);
+}
+
+/* Result */
+.hero {
+  margin: 0;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  font-size: clamp(20px, 3.4vw, 32px);
+}
+
+.metric {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 6px;
+}
+
+.metric-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.metric-value {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-size: clamp(34px, 6vw, 56px);
+}
+
+#safetyindex {
+  /* If you ever want to color it via JS, this will still look nice */
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(124, 92, 255, 0.12);
+  border: 1px solid rgba(124, 92, 255, 0.22);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 6px 0 0;
+  font-size: 13px;
+}
+
+/* Improve tap targets on mobile */
+button,
+input[type="submit"] {
+  min-height: 44px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+#displayContainer {
+    display: none;
+}

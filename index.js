@@ -9,6 +9,14 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+app.use("/api", (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.sendStatus(204); // handle preflight
+  next();
+});
+
 app.get("/api", async (req, res) => {
   // Get latitude and longitude from query parameters
   const lat = parseFloat(req.query.lat);
@@ -27,6 +35,7 @@ app.get("/api", async (req, res) => {
     const outsideNow = percentExposureIfOutsideNow(uvIndexData, "II", 1);
 
     const safeToGoOutside = safeStartTimeForRestOfDay(uvIndexData, "II", 2);
+
     res.json({
       safetyIndexNow: outsideNow.percent,
       safeToGoOutside,
@@ -46,26 +55,26 @@ app.listen(port, () => {
 
 const getUVIndex = async (lat, lon) => {
   try {
-    // Check if cache folder exists, if not create it
-    if (!fs.existsSync("cache")) {
-      fs.mkdirSync("cache");
-    }
+    // // Check if cache folder exists, if not create it
+    // if (!fs.existsSync("cache")) {
+    //   fs.mkdirSync("cache");
+    // }
 
-    let latLonHash = `${lat.toFixed(4)}_${lon.toFixed(4)}`;
-    let cacheFile = `cache/uv_cache_${latLonHash}.json`;
+    // let latLonHash = `${lat.toFixed(4)}_${lon.toFixed(4)}`;
+    // let cacheFile = `cache/uv_cache_${latLonHash}.json`;
 
-    // Check if cached data exists in cache folder
-    if (fs.existsSync(cacheFile)) {
-      let cachedData = fs.readFileSync(cacheFile, "utf-8");
-      return JSON.parse(cachedData);
-    }
+    // // Check if cached data exists in cache folder
+    // if (fs.existsSync(cacheFile)) {
+    //   let cachedData = fs.readFileSync(cacheFile, "utf-8");
+    //   return JSON.parse(cachedData);
+    // }
 
     const response = await axios.get(
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=uv_index&timezone=auto`,
     );
 
     // Cache the response data
-    fs.writeFileSync(cacheFile, JSON.stringify(response.data), "utf-8");
+    // fs.writeFileSync(cacheFile, JSON.stringify(response.data), "utf-8");
 
     return response.data;
   } catch (error) {

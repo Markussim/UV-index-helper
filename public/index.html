@@ -7,12 +7,69 @@
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
-  <body>
-    <h1>UV Index Helper</h1>
-    <p>Use the API to get UV index safety information.</p>
-    <p>Example API call:</p>
-    <pre>http://localhost:3000/api?lat=-33.4489&lon=-70.6693</pre>
 
-    <div id="output"></div>
+  <body>
+    <main class="page">
+      <header class="header">
+        <h1 class="title">UV Index Helper</h1>
+        <p class="subtitle">Helps you decide when to use sunscreen.</p>
+      </header>
+
+      <section class="card" aria-label="Location">
+        <div class="actions">
+          <button id="fetch" class="btn btn-primary" type="button">
+            Fetch current position
+          </button>
+          <p id="accuracy" class="muted"></p>
+        </div>
+
+        <form id="coordinateForm" class="form">
+          <label class="field">
+            <span class="label">Latitude</span>
+            <input
+              id="lat"
+              class="input"
+              type="number"
+              placeholder="e.g. 34.05"
+              max="180"
+              min="-180"
+              step="any"
+              required
+            />
+          </label>
+
+          <label class="field">
+            <span class="label">Longitude</span>
+            <input
+              id="lon"
+              class="input"
+              type="number"
+              placeholder="e.g. -118.25"
+              max="180"
+              min="-180"
+              step="any"
+              required
+            />
+          </label>
+
+          <input class="btn btn-ghost" type="submit" value="Check UV safety" />
+        </form>
+      </section>
+
+      <section
+        class="card card-result"
+        id="displayContainer"
+        aria-label="Result"
+      >
+        <p id="goOut" class="hero">Loading</p>
+
+        <div class="metric">
+          <p class="metric-label">Current safety index</p>
+          <p class="metric-value">
+            <span id="safetyindex">loading</span>
+          </p>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
