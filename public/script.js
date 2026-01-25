@@ -7,12 +7,11 @@ const lon = document.getElementById("lon");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  document.getElementById("displayContainer").style.display = "none";
 
   const response = await fetch(`/api?lat=${lat.value}&lon=${lon.value}`);
 
   const data = await response.json();
-
-  document.getElementById("displayContainer").style.display = "block";
 
   let goOut = null;
 
@@ -37,6 +36,30 @@ form.addEventListener("submit", async (e) => {
 
   document.getElementById("safetyindex").innerText =
     data.safetyIndexNow.toFixed(1) + "%";
+
+  const locationResponse = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat.value}&lon=${lon.value}`,
+  );
+
+  const locationData = await locationResponse.json();
+
+  let location = null;
+
+  if (locationData.address) {
+    if (locationData.address.city) {
+      location = locationData.address.city;
+    } else if (locationData.address.municipality) {
+      location = locationData.address.municipality;
+    } else {
+      location = locationData.address.country;
+    }
+  } else {
+    location = "the middle of nowhere";
+  }
+
+  document.getElementById("location").innerText = location;
+
+  document.getElementById("displayContainer").style.display = "block";
 });
 
 const getPosition = document.getElementById("fetch");
@@ -58,6 +81,8 @@ getPosition.addEventListener("click", async (e) => {
           ) +
           "m";
 
+        form.requestSubmit(); // triggers your form's submit listener
+
         getPosition.disabled = false;
       },
       undefined,
@@ -66,6 +91,6 @@ getPosition.addEventListener("click", async (e) => {
       },
     );
   } else {
-    console.error("Det gick inte");
+    console.error("No geolocation available");
   }
 });
