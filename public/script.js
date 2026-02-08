@@ -4,6 +4,7 @@ const form = document.getElementById("coordinateForm");
 
 const lat = document.getElementById("lat");
 const lon = document.getElementById("lon");
+const skinType = document.getElementById("skinType");
 
 let countdownTimerId = null;
 let refreshTimerId = null;
@@ -82,14 +83,17 @@ function renderGoOut(data) {
   document.getElementById("goOut").innerText = goOut ?? "";
 }
 
-async function fetchAndStart(latValue, lonValue) {
+async function fetchAndStart(latValue, lonValue, skinTypeValue) {
   clearActiveWork();
 
   currentAbort = new AbortController();
 
-  const response = await fetch(`/api?lat=${latValue}&lon=${lonValue}`, {
-    signal: currentAbort.signal,
-  });
+  const response = await fetch(
+    `/api?lat=${latValue}&lon=${lonValue}&skinType=${skinTypeValue}`,
+    {
+      signal: currentAbort.signal,
+    },
+  );
   const data = await response.json();
 
   // Render once now
@@ -102,13 +106,13 @@ async function fetchAndStart(latValue, lonValue) {
   // Start ticking (recompute "in X minutes" without re-fetching)
   countdownTimerId = setInterval(() => {
     renderGoOut(data);
-  }, 1000); // or 10_000 / 60_000 if you prefer less frequent updates
+  }, 500); // or 10_000 / 60_000 if you prefer less frequent updates
 
   // Schedule refresh from API every minute
   refreshTimerId = setTimeout(
     async () => {
       try {
-        await fetchAndStart(latValue, lonValue); // refresh data + restart timers cleanly
+        await fetchAndStart(latValue, lonValue, skinTypeValue); // refresh data + restart timers cleanly
       } catch (e) {
         // If aborted because user submitted new coords, ignore
         if (e.name !== "AbortError") console.error(e);
@@ -128,7 +132,7 @@ form.addEventListener("submit", async (e) => {
     `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat.value}&lon=${lon.value}`,
   );
 
-  const data = await fetchAndStart(lat.value, lon.value);
+  const data = await fetchAndStart(lat.value, lon.value, skinType.value);
 
   const locationData = await locationResponse.json();
 

@@ -21,6 +21,7 @@ app.get("/api", async (req, res) => {
   // Get latitude and longitude from query parameters
   const lat = parseFloat(req.query.lat);
   const lon = parseFloat(req.query.lon);
+  const skinTypeParam = req.query.skinType || "II";
 
   if (isNaN(lat) || isNaN(lon)) {
     res
@@ -32,9 +33,17 @@ app.get("/api", async (req, res) => {
   try {
     const uvIndexData = await getUVIndex(lat, lon);
 
-    const outsideNow = percentExposureIfOutsideNow(uvIndexData, "II", 1);
+    const outsideNow = percentExposureIfOutsideNow(
+      uvIndexData,
+      skinTypeParam,
+      1,
+    );
 
-    const safeToGoOutside = safeStartTimeForRestOfDay(uvIndexData, "II", 2);
+    const safeToGoOutside = safeStartTimeForRestOfDay(
+      uvIndexData,
+      skinTypeParam,
+      2,
+    );
 
     res.json({
       safetyIndexNow: outsideNow.percent,
