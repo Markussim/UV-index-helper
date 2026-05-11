@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: UV Index Helper API
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    Runtime: nodejs20.x
+    Architectures:
+    - x86_64
+Resources:
+  UVIndexFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: uv-index-api
+      CodeUri: UVIndexFunction
+      Handler: lambda.handler
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: UVIndexApi
+            Path: /{proxy+}
+            Method: ANY
+    Metadata:
+      SamResourceId: UVIndexFunction
+  UVIndexApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: '''GET,OPTIONS'''
+        AllowHeaders: '''Content-Type'''
+        AllowOrigin: '''*'''
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${UVIndexApi}.execute-api.${AWS::Region}.amazonaws.com/prod

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UV Index</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <main class="page">
+      <header class="header">
+        <h1 class="title">UV Index Helper</h1>
+        <p class="subtitle">Helps you decide when to use sunscreen.</p>
+      </header>
+
+      <section class="card" aria-label="Location">
+        <div class="actions">
+          <button id="fetch" class="btn btn-primary" type="button">
+            Fetch current position
+          </button>
+          <p id="accuracy" class="muted"></p>
+        </div>
+
+        <form id="coordinateForm" class="form">
+          <label class="field">
+            <span class="label">Latitude</span>
+            <input
+              id="lat"
+              class="input"
+              type="number"
+              placeholder="e.g. 34.05"
+              max="180"
+              min="-180"
+              step="any"
+              required
+            />
+          </label>
+
+          <label class="field">
+            <span class="label">Longitude</span>
+            <input
+              id="lon"
+              class="input"
+              type="number"
+              placeholder="e.g. -118.25"
+              max="180"
+              min="-180"
+              step="any"
+              required
+            />
+          </label>
+
+          <label class="field">
+            <span class="label">Skin Type</span>
+            <select id="skinType" class="input">
+              <option value="I">Type I - Very light (always burns)</option>
+              <option value="II" selected>
+                Type II - Light (burns easily)
+              </option>
+              <option value="III">Type III - Medium (burns moderately)</option>
+              <option value="IV">Type IV - Olive (burns minimally)</option>
+              <option value="V">Type V - Dark (rarely burns)</option>
+              <option value="VI">
+                Type VI - Very dark (almost never burns)
+              </option>
+            </select>
+          </label>
+
+          <input class="btn btn-ghost" type="submit" value="Check UV safety" />
+        </form>
+      </section>
+
+      <section
+        class="card card-result"
+        id="displayContainer"
+        aria-label="Result"
+      >
+        <p>Data for <span id="location">loading</span></p>
+        <p id="goOut" class="hero">Loading</p>
+
+        <div class="metric">
+          <p class="metric-label">Current safety index</p>
+          <p class="metric-value">
+            <span id="safetyindex">loading</span>
+          </p>
+        </div>
+      </section>
+
+      <footer class="footer muted">
+        When safety index is at 100%, you are expected to get a sunburn if you
+        are out in the sun for the rest of the day. In practice you will almost
+        never be out that much, so time until safe has a factor of 2x.
+      </footer>
+    </main>
+  </body>
+</html>
